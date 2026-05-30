@@ -1,54 +1,60 @@
-\# 🚀 Microservices Containerization Project
+# 🚀 Microservices Containerization Project
 
-\---
+---
 
-\#\# 📌 Overview
+## 📌 Overview
 
 This project demonstrates how to containerize a Node.js-based microservices application using Docker and Docker Compose.
 
 The application consists of:
 
-\- ✅ User Service → Port 3000 
+- ✅ User Service → Port 3000
+- ✅ Product Service → Port 3001
+- ✅ Gateway Service → Port 3003
 
-\- ✅ Product Service → Port 3001 
+---
 
-\- ✅ Gateway Service → Port 3003 
+## 🧱 Project Structure
 
-\---
-
-\#\# 🧱 Project Structure
-
-submission/ ├── user-service/ │ ├── Dockerfile │ └── app.js ├── product-service/ │ ├── Dockerfile │ └── app.js ├── gateway-service/ │ ├── Dockerfile │ └── app.js ├── docker-compose.yaml └── README.md
-
+```
+submission/
+├── user-service/
+│   ├── Dockerfile
+│   ├── app.js
+│   └── package.json
+├── product-service/
+│   ├── Dockerfile
+│   ├── app.js
+│   └── package.json
+├── gateway-service/
+│   ├── Dockerfile
+│   ├── app.js
+│   └── package.json
+├── docker-compose.yml
+└── README.md
 ```
 
 ---
 
 ## 🧠 Application Flow
 
-```
-
-Client (Browser / curl) ↓ Gateway Service (Port 3003\) ↓ ┌───────────────┬───────────────┐ ↓ ↓ User Service Product Service (Port 3000\) (Port 3001\)
-
-![][image1]
-
-```
+![Microservices Architecture Diagram](./images/01-architecture-diagram.png)
 
 ### 🔁 Flow Explanation
 
-1. User sends request to Gateway  
+1. User sends request to Gateway
 2. Gateway routes request:
-   - `/api/users` → User Service  
-   - `/api/products` → Product Service  
-3. Backend services process request  
-4. Gateway returns response to user  
+   - `/api/users` → User Service
+   - `/api/products` → Product Service
+3. Backend services process request
+4. Gateway returns response to user
 
 ✅ Communication happens via Docker network using service names:
+
 ```
-
-http://user-service:3000 http://product-service:3001
-
-````
+http://user-service:3000
+http://product-service:3001
+```
 
 ---
 
@@ -68,226 +74,268 @@ sudo apt update
 sudo apt install docker.io -y
 sudo systemctl start docker
 sudo systemctl enable docker
-````
+```
 
 Verify:
 
-Shell  
-docker \--version  
-Show more lines  
+```bash
+docker --version
+```
+
 ---
 
-### **✅ macOS (Homebrew)**
+### ✅ macOS (Homebrew)
 
-Shell  
-brew install \--cask docker  
-Show more lines
+```bash
+brew install --cask docker
+```
 
 Then start Docker Desktop.
 
 ---
 
-## **🧰 Install Docker Compose**
+## 🧰 Install Docker Compose
 
-### **✅ Ubuntu**
+### ✅ Ubuntu
 
-Shell  
-sudo apt install docker-compose \-y  
-Show more lines
+```bash
+sudo apt install docker-compose -y
+```
 
 Verify:
 
-Shell  
-docker-compose \--version  
-Show more lines  
+```bash
+docker-compose --version
+```
+
 ---
 
-## **🚀 Setup Instructions**
+## 🚀 Setup Instructions
 
-1. Clone the repository:
+1. **Clone the repository:**
 
-Shell  
-git clone https://github.com/\<your-username\>/Microservices-Task.git  
-cd submission  
-Show more lines
+```bash
+git clone https://github.com/<your-username>/Microservices-Task.git
+cd submission
+```
 
-![][image2]
+![Git Clone Process](./images/07-git-clone-process.png)
 
-1. Build and start all services:
+2. **Build and start all services:**
 
-Shell  
-docker-compose up \--build  
-Show more lines
+```bash
+docker-compose up --build
+```
 
-![][image3]  
+![Docker Compose Build Output](./images/02-docker-compose-build.png)
+
 ---
 
-## **✅ Verify Running Containers**
+## ✅ Verify Running Containers
 
-Shell  
-docker ps  
-Show more lines
+```bash
+docker ps
+```
 
 You should see:
 
-* user-service ✅  
-* product-service ✅  
-* gateway-service ✅
+- user-service ✅
+- product-service ✅
+- gateway-service ✅
 
-![][image4]  
----
-
-## **🌐 Access Services**
-
-### **Direct Access:**
-
-* User Service:  
-   [http://localhost:3000/users](http://localhost:3000/users)
-
-![][image5]
-
-* Product Service:  
-   http://localhost:3001/products
-
-![][image6]
+![Docker PS Output - Running Containers](./images/03-docker-ps-output.png)
 
 ---
 
-### **Gateway Access (Main Entry Point):**
+## 🌐 Access Services
 
-* Users API:  
-   [http://localhost:3003/api/users](http://localhost:3003/api/users)
+### Direct Access
 
-![][image7]
+#### **User Service (Port 3000)**
 
-* Products API:  
-   http://localhost:3003/api/products
-
-![][image8]
-
----
-
-## **🧪 Testing**
-
-### **✅ Using curl**
-
-Shell  
-\# User Service  
+```bash
 curl http://localhost:3000/users
+```
 
-\# Product Service  
+![User Service Direct Access](./images/11-user-service-direct-access.png)
+
+#### **Product Service (Port 3001)**
+
+```bash
 curl http://localhost:3001/products
+```
 
-\# Gateway Service  
-curl http://localhost:3003/api/users  
-curl http://localhost:3003/api/products  
-Show more lines
-
-![][image9]  
----
-
-## **🛠 Troubleshooting**
-
-### **❌ Containers not starting**
-
-Shell  
-docker-compose logs  
-Show more lines  
----
-
-### **❌ Restart services**
-
-Shell  
-docker-compose down  
-docker-compose up \--build  
-Show more lines  
----
-
-### **❌ Port already in use**
-
-Shell  
-sudo lsof \-i :3000  
-kill \-9 \<PID\>  
-Show more lines  
----
-
-### **❌ Docker not running**
-
-Shell  
-sudo systemctl start docker  
-Show more lines  
----
-
-## **⚡ Docker Best Practices Used**
-
-* ✅ Lightweight base image (`node:18-alpine`)  
-* ✅ Production dependencies only  
-* ✅ Optimized layer caching  
-* ✅ Service-to-service communication using Docker networking  
-* ✅ Clean and modular service structure
+![Product Service Direct Access](./images/09-product-service-direct-access.png)
 
 ---
 
-## **⚠️ Challenges Faced**
+### Gateway Access (Main Entry Point - Port 3003)
 
-### **1\. npm SSL Certificate Issue**
-
-* Error: `UNABLE_TO_GET_ISSUER_CERT_LOCALLY`  
-* ✅ Solution:  
-  * Installed `ca-certificates`  
-  * Disabled strict SSL temporarily
-
----
-
-### **2\. npm ci Failure**
-
-* Error: Requires `package-lock.json`  
-* ✅ Solution:  
-  * Replaced with:
+#### **Users API**
 
 ```
+http://localhost:3003/api/users
+```
+
+![Gateway Users API Response - Browser](./images/10-gateway-users-api-browser.png)
+
+![Gateway Users API Response - curl](./images/06-gateway-health-and-users-api.png)
+
+#### **Products API**
+
+```
+http://localhost:3003/api/products
+```
+
+![Gateway Products API Response](./images/08-gateway-products-api-browser.png)
+
+---
+
+## 🧪 Testing
+
+### Using curl - Complete Testing
+
+```bash
+# User Service - Direct Access
+curl http://localhost:3000/users
+curl http://localhost:3000/health
+
+# Product Service - Direct Access
+curl http://localhost:3001/products
+curl http://localhost:3001/health
+
+# Gateway Service - Routing
+curl http://localhost:3003/health
+curl http://localhost:3003/api/users
+curl http://localhost:3003/api/products
+```
+
+![Complete API Testing with curl](./images/04-api-testing-curl.png)
+
+---
+
+## 🛠 Troubleshooting
+
+### ❌ Containers not starting
+
+```bash
+docker-compose logs
+```
+
+---
+
+### ❌ Restart services
+
+```bash
+docker-compose down
+docker-compose up --build
+```
+
+---
+
+### ❌ Port already in use
+
+```bash
+sudo lsof -i :3000
+kill -9 <PID>
+```
+
+---
+
+### ❌ Docker not running
+
+```bash
+sudo systemctl start docker
+```
+
+---
+
+## ⚡ Docker Best Practices Used
+
+- ✅ Lightweight base image (`node:18-alpine`)
+- ✅ Production dependencies only
+- ✅ Optimized layer caching
+- ✅ Service-to-service communication using Docker networking
+- ✅ Clean and modular service structure
+
+---
+
+## ⚠️ Challenges Faced
+
+### 1. npm SSL Certificate Issue
+
+- **Error:** `UNABLE_TO_GET_ISSUER_CERT_LOCALLY`
+- **✅ Solution:**
+  - Installed `ca-certificates`
+  - Disabled strict SSL temporarily
+
+---
+
+### 2. npm ci Failure
+
+- **Error:** Requires `package-lock.json`
+- **✅ Solution:** Replaced with:
+
+```bash
 npm install --omit=dev
 ```
 
 ---
 
-### **3\. Service Communication Failure**
+### 3. Service Communication Failure
 
-* Issue: Using `localhost` between containers  
-* ✅ Solution:  
-  * Used service names:
+- **Issue:** Using `localhost` between containers
+- **✅ Solution:** Used service names:
 
 ```
 http://user-service:3000
+http://product-service:3001
 ```
 
 ---
 
-### **4\. Missing Routes (Cannot GET /)**
+### 4. Missing Routes (Cannot GET /)
 
-* Issue: Root route not defined  
-* ✅ Solution:  
-  * Added `/` endpoint for better testing
-
----
-
-### **5\. Port Conflicts**
-
-* Issue: Services not starting due to port usage  
-* ✅ Solution:  
-  * Verified and freed ports
+- **Issue:** Root route not defined
+- **✅ Solution:** Added `/` endpoint for better testing
 
 ---
 
-## **✅ Conclusion**
+### 5. Port Conflicts
 
-* Successfully containerized Node.js microservices  
-* Used Docker Compose for orchestration  
-* Enabled inter-service communication  
-* Verified all services via API endpoints
+- **Issue:** Services not starting due to port usage
+- **✅ Solution:** Verified and freed ports
 
 ---
 
-## **📝 Author**
+## ✅ Conclusion
 
-Shagun Maheshwari
+- Successfully containerized Node.js microservices
+- Used Docker Compose for orchestration
+- Enabled inter-service communication
+- Verified all services via API endpoints
+- Demonstrated proper gateway routing and service discovery
+
+---
+
+## 📝 Author
+
+**Shagun Maheshwari**
+
+---
+
+## 📸 Screenshots Guide
+
+| # | Description | File |
+|---|---|---|
+| 1 | Microservices Architecture Diagram | `01-architecture-diagram.png` |
+| 2 | Docker Compose Build Output | `02-docker-compose-build.png` |
+| 3 | Docker PS - Running Containers | `03-docker-ps-output.png` |
+| 4 | API Testing with curl | `04-api-testing-curl.png` |
+| 5 | Gateway Users API Response | `05-gateway-users-api.png` |
+| 6 | Gateway Health & Users API | `06-gateway-health-and-users-api.png` |
+| 7 | Git Clone Process | `07-git-clone-process.png` |
+| 8 | Gateway Products API Browser | `08-gateway-products-api-browser.png` |
+| 9 | Product Service Direct Access | `09-product-service-direct-access.png` |
+| 10 | Gateway Users API Browser | `10-gateway-users-api-browser.png` |
+| 11 | User Service Direct Access | `11-user-service-direct-access.png` |
